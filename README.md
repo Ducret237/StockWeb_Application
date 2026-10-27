@@ -1,20 +1,40 @@
 # StockManager
 
-Creation d'une application de gestion de stock.
+Application de gestion de stock avec une API Django et une interface React.
 
-## React + Vite
+## Prerequis
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- Python
+- Node.js et npm
 
-Currently, two official plugins are available:
+## Demarrer l'API Django
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/create-vite/template-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/create-vite/template-react-swc) uses [SWC](https://swc.rs/)
+Depuis le dossier `StockManager_Backend` :
 
-## React Compiler
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+if (-not (Test-Path .env)) { Copy-Item .env.example .env }
+python manage.py migrate
+python manage.py runserver
+```
 
-The React Compiler is not enabled on this template because of its impact on build performance. To add it, see [the React Compiler installation documentation](https://react.dev/learn/react-compiler/installation).
+L'API est alors accessible sur `http://127.0.0.1:8000`.
 
-## Expanding the ESLint configuration
+## Demarrer l'interface React
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out [the TypeScript template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate `typescript-eslint`.
+Dans un autre terminal, depuis le dossier `StockManager_Backend` :
+
+```powershell
+npm install
+npm run dev
+```
+
+Ouvrez l'adresse indiquee par Vite dans le terminal.
+
+## Commandes utiles
+
+- `python manage.py test` : lancer les tests Django.
+- `npm run lint` : verifier le code de l'interface.
+- `npm run build` : construire l'interface pour la production.
