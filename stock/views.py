@@ -1,6 +1,10 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import (
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly,
+)
 
 from .models import (
     Categorie,
@@ -22,6 +26,8 @@ from .serializers import (
 # =========================
 
 class CategorieList(APIView):
+
+    permission_classes = [IsAuthenticatedOrReadOnly] # autorise la lecture sans authentification mais exige une authentification pour les opérations de modification.
 
     def get(self, request):
         categories = Categorie.objects.all()
@@ -46,6 +52,8 @@ class CategorieList(APIView):
 
 
 class CategorieDetail(APIView):
+
+    permission_classes = [IsAuthenticatedOrReadOnly]  # autorise la lecture sans authentification mais exige une authentification pour les opérations de modification.
 
     def get_object(self, pk):
         try:
@@ -110,6 +118,8 @@ class CategorieDetail(APIView):
 
 class FournisseurList(APIView):
 
+    permission_classes = [IsAuthenticated] # autorise uniquement les utilisateurs authentifiés à accéder à cette vue.
+
     def get(self, request):
         fournisseurs = Fournisseur.objects.all()
         serializer = FournisseurSerializer(
@@ -137,6 +147,8 @@ class FournisseurList(APIView):
 
 
 class FournisseurDetail(APIView):
+
+    permission_classes = [IsAuthenticated] # autorise uniquement les utilisateurs authentifiés à accéder à cette vue.
 
     def get_object(self, pk):
         try:
@@ -203,6 +215,8 @@ class FournisseurDetail(APIView):
 
 class ProduitList(APIView):
 
+    permission_classes = [IsAuthenticatedOrReadOnly]  # autorise la lecture sans authentification mais exige une authentification pour les opérations de modification.
+
     def get(self, request):
         produits = Produit.objects.all()
         serializer = ProduitSerializer(produits, many=True)
@@ -227,6 +241,8 @@ class ProduitList(APIView):
 
 
 class ProduitDetail(APIView):
+
+    permission_classes = [IsAuthenticatedOrReadOnly]  # autorise la lecture sans authentification mais exige une authentification pour les opérations de modification.
 
     def get_object(self, pk):
         try:
@@ -293,6 +309,8 @@ class ProduitDetail(APIView):
 
 class MouvementStockList(APIView):
 
+    permission_classes = [IsAuthenticated]  # autorise uniquement les utilisateurs authentifiés à accéder à cette vue.
+
     def get(self, request):
         mouvements = MouvementStock.objects.all().order_by("-date")
 
@@ -309,7 +327,7 @@ class MouvementStockList(APIView):
         )
 
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(utilisateur=request.user) # Enregistre l'utilisateur authentifié comme l'auteur du mouvement de stock
 
             return Response(
                 serializer.data,

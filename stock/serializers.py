@@ -38,6 +38,12 @@ class ProduitSerializer(serializers.ModelSerializer):
             "fournisseur",
         ]
 
+    def validate_prix(self, value): # valide que le prix du produit est supérieur à 0
+        if value <= 0:
+            raise serializers.ValidationError(
+                "Le prix doit être supérieur à 0."
+            )
+        return value
 
 class MouvementStockSerializer(serializers.ModelSerializer):
     class Meta:
