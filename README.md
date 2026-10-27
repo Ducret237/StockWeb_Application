@@ -24,7 +24,7 @@ L'API est alors accessible sur `http://127.0.0.1:8000`.
 
 ## Demarrer l'interface React
 
-Dans un autre terminal, depuis le dossier `StockManager_Backend` :
+Dans un autre terminal, depuis le dossier `StockManager_Frontend` (a cote de `StockManager_Backend`) :
 
 ```powershell
 npm install
