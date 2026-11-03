@@ -1,7 +1,9 @@
 import { useState } from "react";
 import api from "../api";
+import { useNavigate } from "react-router-dom";
 
 function Login() { 
+  const navigate = useNavigate();
   const [username, setUsername] = useState(""); // Stocke le nom d'utilisateur saisi par l'utilisateur
   const [password, setPassword] = useState(""); // Stocke le mot de passe saisi par l'utilisateur
 
@@ -18,6 +20,8 @@ function Login() {
 // Stocke le token d'accès dans le stockage local
    localStorage.setItem("access", response.data.access); 
    localStorage.setItem("refresh", response.data.refresh);
+   
+   navigate("/dashboard"); // Redirige vers la page du tableau de bord après la connexion réussie
 
    console.log("Connexion réussie");
 
