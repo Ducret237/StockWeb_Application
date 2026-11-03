@@ -30,7 +30,7 @@ function Login() {
     <div>
       <h1>Connexion</h1>
 
-      <form onSubmit={handleSubmit}> // Appelle la fonction handleSubmit lors de la soumission du formulaire
+      <form onSubmit={handleSubmit}> 
         <div>
           <label>Nom d'utilisateur :</label>
           <br />
