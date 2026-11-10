@@ -6,6 +6,8 @@ import Produits from "./pages/Produits";
 import Dashboard from "./pages/Dashboard";
 
 import PrivateRoute from "./components/PrivateRoute";
+import AjouterProduit from "./pages/AjouterProduit";
+import ModifierProduit from "./pages/ModifierProduit";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Link to="/produits">Produits</Link>
         {" | "}
         <Link to="/dashboard">Tableau de bord</Link>
+        {" | "}
+        <Link to="/produits/ajouter">Ajouter un produit</Link>
       </nav>
 
       <Routes>
@@ -41,6 +45,23 @@ function App() {
           element={
             <PrivateRoute>
               <Dashboard />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/produits/ajouter"
+          element={
+            <PrivateRoute>
+             <AjouterProduit />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/produits/:id/modifier"
+          element={
+            <PrivateRoute>
+              <ModifierProduit />
             </PrivateRoute>
           }
         />

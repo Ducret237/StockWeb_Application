@@ -1,63 +1,94 @@
 import { useState } from "react";
-import api from "../api";
 import { useNavigate } from "react-router-dom";
+import api from "../api";
 
-function Login() { 
+function Login() {
   const navigate = useNavigate();
-  const [username, setUsername] = useState(""); // Stocke le nom d'utilisateur saisi par l'utilisateur
-  const [password, setPassword] = useState(""); // Stocke le mot de passe saisi par l'utilisateur
 
-  async function handleSubmit(event) { // Gère la soumission du formulaire de connexion
-  event.preventDefault(); // Empêche le rechargement de la page lors de la soumission du formulaire
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-// Effectue la requête de connexion à l'API
-  try {
-    const response = await api.post("token/", {
-      username: username,
-      password: password,
-    });
+  async function handleSubmit(event) {
+    event.preventDefault();
 
-// Stocke le token d'accès dans le stockage local
-   localStorage.setItem("access", response.data.access); 
-   localStorage.setItem("refresh", response.data.refresh);
-   
-   navigate("/dashboard"); // Redirige vers la page du tableau de bord après la connexion réussie
+    // Efface l'ancien message d'erreur avant une nouvelle tentative
+    setError("");
 
-   console.log("Connexion réussie");
+    try {
+      // Envoie les identifiants à l'API Django
+      const response = await api.post("token/", {
+        username: username,
+        password: password,
+      });
 
-  } catch (error) {
-    console.error("Erreur de connexion :", error);
+      // Enregistre les tokens JWT dans le stockage local
+      localStorage.setItem("access", response.data.access);
+      localStorage.setItem("refresh", response.data.refresh);
+
+      console.log("Connexion réussie");
+
+      // Redirige vers le tableau de bord
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Erreur de connexion :", error);
+
+      setError(
+        "Nom d'utilisateur ou mot de passe incorrect."
+      );
+    }
   }
-}
 
   return (
     <div>
       <h1>Connexion</h1>
 
-      <form onSubmit={handleSubmit}> 
+      <form onSubmit={handleSubmit}>
         <div>
-          <label>Nom d'utilisateur :</label>
+          <label htmlFor="username">
+            Nom d'utilisateur :
+          </label>
+
           <br />
+
           <input
+            id="username"
             type="text"
             value={username}
-            onChange={(event) => setUsername(event.target.value)}
+            onChange={(event) =>
+              setUsername(event.target.value)
+            }
+            required
           />
         </div>
 
         <br />
 
         <div>
-          <label>Mot de passe :</label>
+          <label htmlFor="password">
+            Mot de passe :
+          </label>
+
           <br />
+
           <input
+            id="password"
             type="password"
             value={password}
-            onChange={(event) => setPassword(event.target.value)}
+            onChange={(event) =>
+              setPassword(event.target.value)
+            }
+            required
           />
         </div>
 
         <br />
+
+        {error && (
+          <p>
+            {error}
+          </p>
+        )}
 
         <button type="submit">
           Connexion
