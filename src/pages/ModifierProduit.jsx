@@ -16,7 +16,7 @@ function ModifierProduit() {
   const [categorie, setCategorie] = useState("");
   const [fournisseur, setFournisseur] = useState("");
 
-  useEffect(() => {
+  useEffect(() => { 
     async function chargerDonnees() {
       try {
         const responseProduit = await api.get(`produits/${id}/`);
@@ -36,7 +36,7 @@ function ModifierProduit() {
         );
       }
 
-      try {
+      try { 
         const responseCategories = await api.get("categories/");
         setCategories(responseCategories.data);
       } catch (error) {
