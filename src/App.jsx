@@ -1,34 +1,71 @@
-import { useEffect, useState } from "react";
-import api from "./api";
+import { Link, Route, Routes } from "react-router-dom";
+
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Produits from "./pages/Produits";
+import Dashboard from "./pages/Dashboard";
+
+import PrivateRoute from "./components/PrivateRoute";
+import AjouterProduit from "./pages/AjouterProduit";
+import ModifierProduit from "./pages/ModifierProduit";
 
 function App() {
-  const [produits, setProduits] = useState([]);
-
-  useEffect(() => {
-    api.get("produits/")
-      .then((response) => {
-        setProduits(response.data);
-      })
-      .catch((error) => {
-        console.error("Erreur lors du chargement des produits :", error);
-      });
-  }, []);
-
   return (
     <div>
-      <h1>StockManager</h1>
+      <nav>
+        <Link to="/">Accueil</Link>
+        {" | "}
+        <Link to="/login">Connexion</Link>
+        {" | "}
+        <Link to="/produits">Produits</Link>
+        {" | "}
+        <Link to="/dashboard">Tableau de bord</Link>
+        {" | "}
+        <Link to="/produits/ajouter">Ajouter un produit</Link>
+      </nav>
 
-      <h2>Liste des produits</h2>
+      <Routes>
+        <Route
+          path="/"
+          element={<Home />}
+        />
 
-      {produits.map((produit) => (
-        <div key={produit.id}>
-          <h3>{produit.nom}</h3>
-          <p>Description : {produit.description}</p>
-          <p>Prix : {produit.prix} $</p>
-          <p>Quantité : {produit.quantite}</p>
-          <hr />
-        </div>
-      ))}
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+
+        <Route
+          path="/produits"
+          element={<Produits />}
+        />
+
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/produits/ajouter"
+          element={
+            <PrivateRoute>
+             <AjouterProduit />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/produits/:id/modifier"
+          element={
+            <PrivateRoute>
+              <ModifierProduit />
+            </PrivateRoute>
+          }
+        />
+      </Routes>
     </div>
   );
 }
