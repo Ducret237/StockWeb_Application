@@ -46,6 +46,13 @@ class ProduitSerializer(serializers.ModelSerializer):
         return value
 
 class MouvementStockSerializer(serializers.ModelSerializer):
+    produit_nom = serializers.CharField(  # sérialise le nom du produit associé au mouvement de stock
+        source="produit.nom",
+        read_only=True
+    )
+
+    utilisateur_nom = serializers.SerializerMethodField() # sérialise le nom de l'utilisateur associé au mouvement de stock
+
     class Meta:
         model = MouvementStock
         fields = [
@@ -54,21 +61,28 @@ class MouvementStockSerializer(serializers.ModelSerializer):
             "quantite",
             "date",
             "produit",
+            "produit_nom",
             "utilisateur",
+            "utilisateur_nom",
         ]
 
-        read_only_fields = [
+        read_only_fields = [  # définit les champs en lecture seule pour éviter qu'ils ne soient modifiés lors de la création ou de la mise à jour d'un mouvement de stock
             "date",
             "utilisateur",
         ]
 
-    def validate_quantite(self, valeur):
-        if valeur <= 0:
+    def get_utilisateur_nom(self, obj): 
+        if obj.utilisateur:
+            return obj.utilisateur.username
+        return None
+
+    def validate_quantite(self, value):
+        if value <= 0:
             raise serializers.ValidationError(
                 "La quantité doit être supérieure à 0."
             )
+        return value
 
-        return valeur
     
 # Garantit l'atomicité (tout ou rien) : si la mise à jour du stock ou la 
 # création du mouvement échoue, aucun changement n'est appliqué en base de données
