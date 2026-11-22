@@ -84,7 +84,7 @@ function ModifierProduit() {
         error
       );
 
-      alert("Impossible de modifier le produit.");
+      alert("Impossible de modifier le produit. Veuillez vérifier les informations et réessayer.");
     }
   }
 
