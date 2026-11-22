@@ -26,6 +26,7 @@ class FournisseurSerializer(serializers.ModelSerializer):
 
 
 class ProduitSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Produit
         fields = [
@@ -38,11 +39,30 @@ class ProduitSerializer(serializers.ModelSerializer):
             "fournisseur",
         ]
 
-    def validate_prix(self, value): # valide que le prix du produit est supérieur à 0
+    def validate_nom(self, value):
+        value = value.strip()
+
+        if len(value) < 3:
+            raise serializers.ValidationError(
+                "Le nom doit contenir au moins 3 caractères."
+            )
+
+        return value
+
+    def validate_description(self, value):
+        if len(value) > 500:
+            raise serializers.ValidationError(
+                "La description ne doit pas dépasser 500 caractères."
+            )
+
+        return value
+
+    def validate_prix(self, value):
         if value <= 0:
             raise serializers.ValidationError(
                 "Le prix doit être supérieur à 0."
             )
+
         return value
 
 class MouvementStockSerializer(serializers.ModelSerializer):
