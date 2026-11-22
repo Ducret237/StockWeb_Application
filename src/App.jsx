@@ -7,8 +7,9 @@ import Dashboard from "./pages/Dashboard";
 import Categories from "./pages/Categories";
 import Fournisseurs from "./pages/Fournisseurs";
 import MouvementStock from "./pages/MouvementStock";
-
+import SessionTimeout from "./components/SessionTimeout";
 import PrivateRoute from "./components/PrivateRoute";
+
 import AjouterProduit from "./pages/AjouterProduit";
 import ModifierProduit from "./pages/ModifierProduit";
 import AjouterCategorie from "./pages/AjouterCategorie";
@@ -19,7 +20,9 @@ import AjouterMouvement from "./pages/AjouterMouvement";
 
 function App() {
   return (
-    <div>
+    <>
+      <SessionTimeout />
+
       <nav>
         <Link to="/">Accueil</Link>
         {" | "}
@@ -39,21 +42,9 @@ function App() {
       </nav>
 
       <Routes>
-        <Route
-          path="/"
-          element={<Home />}
-        />
-
-        <Route
-          path="/login"
-          element={<Login />}
-        />
-
-        <Route
-          path="/produits"
-          element={<Produits />}
-        />
-
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/produits" element={<Produits />} />
         <Route
           path="/dashboard"
           element={
@@ -62,12 +53,11 @@ function App() {
             </PrivateRoute>
           }
         />
-
         <Route
           path="/produits/ajouter"
           element={
             <PrivateRoute>
-             <AjouterProduit />
+              <AjouterProduit />
             </PrivateRoute>
           }
         />
@@ -79,69 +69,65 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route path="/categories" element={<Categories />} />
         <Route
-          path="/categories"
-          element={<Categories />}
-        />
-        <Route
-         path="/categories/ajouter"
-         element={
-          <PrivateRoute>
-            <AjouterCategorie />
-          </PrivateRoute>
+          path="/categories/ajouter"
+          element={
+            <PrivateRoute>
+              <AjouterCategorie />
+            </PrivateRoute>
           }
         />
         <Route
           path="/categories/:id/modifier"
           element={
-         <PrivateRoute>
-           <ModifierCategorie />
-         </PrivateRoute>
-         }
+            <PrivateRoute>
+              <ModifierCategorie />
+            </PrivateRoute>
+          }
         />
         <Route
           path="/fournisseurs"
           element={
-        <PrivateRoute>
-          <Fournisseurs />
-        </PrivateRoute>
-         }
+            <PrivateRoute>
+              <Fournisseurs />
+            </PrivateRoute>
+          }
         />
-      <Route
-        path="/fournisseurs/ajouter"
-        element={
-        <PrivateRoute>
-         <AjouterFournisseur />
-        </PrivateRoute>
-        }
-      />
-      <Route
-        path="/fournisseurs/:id/modifier"
-        element={
-        <PrivateRoute>
-          <ModifierFournisseur />
-        </PrivateRoute>
-       }
-      />
-      <Route
-        path="/mouvements"
-        element={
-        <PrivateRoute>
-          <MouvementStock />
-        </PrivateRoute>
-        }
-        
-      />
-      <Route
-        path="/mouvements/ajouter"
-        element={
-          <PrivateRoute>
-            <AjouterMouvement />
-          </PrivateRoute>
-        }
-      />
+        <Route
+          path="/fournisseurs/ajouter"
+          element={
+            <PrivateRoute>
+              <AjouterFournisseur />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/fournisseurs/:id/modifier"
+          element={
+            <PrivateRoute>
+              <ModifierFournisseur />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/mouvements"
+          element={
+            <PrivateRoute>
+              <MouvementStock />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/mouvements/ajouter"
+          element={
+            <PrivateRoute>
+              <AjouterMouvement />
+            </PrivateRoute>
+          }
+        />
       </Routes>
-    </div>
+    </>
   );
 }
 

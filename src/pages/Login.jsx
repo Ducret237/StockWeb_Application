@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
 
@@ -8,6 +8,15 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [sessionMessage] = useState( 
+    () => localStorage.getItem("sessionMessage") || ""
+  );
+
+  useEffect(() => {
+    if (sessionMessage) {
+      localStorage.removeItem("sessionMessage");
+    }
+  }, [sessionMessage]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -42,6 +51,8 @@ function Login() {
   return (
     <div>
       <h1>Connexion</h1>
+
+      {sessionMessage && <p>{sessionMessage}</p>}
 
       <form onSubmit={handleSubmit}>
         <div>
