@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api";
+import { getApiErrorMessage } from "../utils/apiError";
 
 function AjouterProduit() {
   const [categories, setCategories] = useState([]);
@@ -71,7 +72,9 @@ async function handleSubmit(event) {
       error
     );
 
-    alert("Impossible d'ajouter le produit.");
+    alert(getApiErrorMessage(error));
+
+    alert("Impossible d'ajouter le produit. Veuillez vérifier les informations et réessayer.");
   }
 }
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
+import { getApiErrorMessage } from "../utils/apiError";
 
 function AjouterCategorie() {
   const navigate = useNavigate();
@@ -24,15 +25,15 @@ function AjouterCategorie() {
 
       navigate("/categories");
     } catch (error) {
-      console.error(
-        "Erreur lors de l'ajout de la catégorie :",
-        error
-      );
+  console.error(
+    "Erreur lors de l'ajout de la catégorie :",
+    error
+  );
 
-      setError(
-        "Impossible d'ajouter la catégorie."
-      );
-    }
+  const message = getApiErrorMessage(error);
+
+  setError(message);
+}
   }
 
   return (
